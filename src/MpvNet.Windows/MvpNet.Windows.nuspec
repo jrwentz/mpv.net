@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>MvpNet.Windows</id>
+    <version>7.1.1.3</version>
+    <title>MvpNet.Windows</title>
+    <authors>mpvnet</authors>
+    <owners></owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MpvNet.Windows as a Library</description>
+    <repository type="git" url="https://github.com/jrwentz/mpv.net" branch="main" />
+    <dependencies>
+      <group targetFramework="net6.0-windows7.0">
+        <!--<dependency id="libmpvnet" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="NGettext.Wpf" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="CommunityToolkit.Mvvm" version="8.2.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.77" exclude="Build,Analyzers" />-->
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net6.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App" />
+      </group>
+    </frameworkReferences>
+    <contentFiles>
+      <files include="any/net6.0-windows7.0/mpv-icon.ico" buildAction="Content" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="mpv-icon.ico" target="content\mpv-icon.ico" />
+    <file src="mpv-icon.ico" target="contentFiles\any\net6.0-windows7.0\mpv-icon.ico" />
+    <!--<file src="lib\net6.0-windows7.0\mpvnet.dll" target="lib\net6.0-windows7.0\mpvnet.dll" />-->
+    <!--<file src="lib\net6.0-windows7.0\mpvnet.runtimeconfig.json" target="lib\net6.0-windows7.0\mpvnet.runtimeconfig.json" />-->
+    <file src="bin\Debug\*.exe" target="lib\net6.0-windows7.0" />
+    <file src="bin\Debug\*.dll" target="lib\net6.0-windows7.0" />
+    <file src="bin\Debug\*.pdb" target="lib\net6.0-windows7.0" />
+    <file src="bin\Debug\*.json" target="lib\net6.0-windows7.0" />
+    <file src="bin\Debug\*.config" target="lib\net6.0-windows7.0" />
+  </files>
+</package>
