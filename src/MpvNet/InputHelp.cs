@@ -7,14 +7,14 @@ public static class InputHelp
 {
     public static List<Binding> GetDefaults()
     {
-        List<Binding> b = new();
+        List<Binding> b = [];
 
         Add(b, new (_("File"), _("Open Files..."), "script-message-to mpvnet open-files", "o"));
         Add(b, new (_("File"), _("Open URL or file from clipboard"), "script-message-to mpvnet open-clipboard", "Ctrl+v"));
         Add(b, new (_("File"), _("Open DVD/Blu-ray Drive/Folder..."), "script-message-to mpvnet open-optical-media"));
         Add(b, new (_("File"), "-"));
-        Add(b, new (_("File"), _("Add external audio files..."), "script-message-to mpvnet load-audio", "Alt+a"));
-        Add(b, new (_("File"), _("Add external subtitle files..."), "script-message-to mpvnet load-sub", "Alt+s"));
+        Add(b, new (_("File"), _("Add external audio files..."), "script-message-to mpvnet load-audio"));
+        Add(b, new (_("File"), _("Add external subtitle files..."), "script-message-to mpvnet load-sub"));
         Add(b, new (_("File"), "-"));
         Add(b, new (_("File"), _("Add files to playlist..."), "script-message-to mpvnet open-files append"));
         Add(b, new (_("File"), _("Add files/URLs to playlist from clipboard"), "script-message-to mpvnet open-clipboard append", "Ctrl+Shift+v"));
@@ -81,7 +81,6 @@ public static class InputHelp
         Add(b, new (_("Video"), _("Toggle Deinterlace"), "cycle deinterlace", "d"));
         Add(b, new (_("Video"), _("Change Aspect Ratio"), "cycle-values video-aspect-override 16:9 4:3 2.35:1 0 -1", "a"));
         Add(b, new (_("Video"), _("Rotate Video"), "cycle-values video-rotate 90 180 270 0", "Ctrl+r"));
-        Add(b, new (_("Video"), _("Stream Quality"), "script-message-to mpvnet stream-quality", "Alt+q"));
 
         Add(b, new (_("Audio"), _("Audio Device")));
         Add(b, new (_("Audio"), _("Next Track"), "script-message-to mpvnet cycle-audio", "KP7"));
@@ -118,54 +117,36 @@ public static class InputHelp
         Add(b, new (_("Speed"), "-"));
         Add(b, new (_("Speed"), _("Reset"), "set speed 1", "BS"));
 
+        Add(b, new (_("View"), _("Playlist"), "script-binding select/select-playlist", "F8"));
         Add(b, new (_("View"), _("Toggle Statistics"), "script-binding stats/display-stats-toggle", "t"));
         Add(b, new (_("View"), _("Toggle OSC Visibility"), "script-binding osc/visibility", "Del"));
-        Add(b, new (_("View"), _("Show Media Info On-Screen"), "script-message-to mpvnet show-media-info osd", "i"));
-        Add(b, new (_("View"), _("Show Media Info Message Box"), "script-message-to mpvnet show-media-info msgbox", "Ctrl+m"));
-        Add(b, new (_("View"), _("Show Progress"), "show-progress", "p"));
-
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Playlist"), "script-binding select/select-playlist", "F8"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Bindings"), "script-binding select/select-binding", "F1"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Properties"), "script-binding select/show-properties", "F3"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Chapters"), "script-binding select/select-chapter", "Alt+c"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Tracks"), "script-binding select/select-track", "F9"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Audio Tracks"), "script-binding select/select-aid"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Subtitle Tracks"), "script-binding select/select-sid"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Secondary Subtitle"), "script-binding select/select-secondary-sid", "Alt+b"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Video Tracks"), "script-binding select/select-vid", "Alt+v"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Subtitle Lines"), "script-binding select/select-subtitle-line", "Alt+l"));
-        Add(b, new (_("View") + " > " + _("On Screen Menu"), _("Audio Devices"), "script-binding select/select-audio-device", "Alt+d"));
-
-        if (File.Exists(Player.ConfigFolder + "/scripts/command_palette.lua"))
-        {
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Command Palette"), "script-message-to command_palette show-command-palette \"Command Palette\"", "Ctrl+p"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Bindings"), "script-message-to command_palette show-command-palette \"Bindings\"", "F1"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Properties"), "script-message-to command_palette show-command-palette \"Properties\"", "F2"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Commands"), "script-message-to command_palette show-command-palette \"Commands\"", "F3"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Options"), "script-message-to command_palette show-command-palette \"Options\"", "F4"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Playlist"), "script-message-to command_palette show-command-palette \"Playlist\"", "F8"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Tracks"), "script-message-to command_palette show-command-palette \"Tracks\"", "F9"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Audio Tracks"), "script-message-to command_palette show-command-palette \"Audio Tracks\"", "Alt+a"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Subtitle Tracks"), "script-message-to command_palette show-command-palette \"Subtitle Tracks\"", "Alt+s"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Secondary Subtitle"), "script-message-to command_palette show-command-palette \"Secondary Subtitle\"", "Alt+b"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Video Tracks"), "script-message-to command_palette show-command-palette \"Video Tracks\"", "Alt+v"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Chapters"), "script-message-to command_palette show-command-palette \"Chapters\"", "Alt+c"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Profiles"), "script-message-to command_palette show-command-palette \"Profiles\"", "Alt+p"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Audio Devices"), "script-message-to command_palette show-command-palette \"Audio Devices\"", "Alt+d"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Subtitle Line"), "script-message-to command_palette show-command-palette \"Subtitle Line\"", "Alt+l"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Blu-ray Titles"), "script-message-to command_palette show-command-palette \"Blu-ray Titles\"", "Alt+t"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Stream Quality"), "script-message-to command_palette show-command-palette \"Stream Quality\"", "Alt+q"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Aspect Ratio"), "script-message-to command_palette show-command-palette \"Aspect Ratio\"", "Alt+r"));
-            Add(b, new(_("View") + " > " + _("Command Palette"), _("Recent Files"), "script-message-to mpvnet show-recent-in-command-palette", "Alt+f"));
-        }
-
-        Add(b, new (_("View") + " > " + _("More"), _("Show Console"), "script-binding console/enable", "`"));
-        Add(b, new (_("View") + " > " + _("More"), _("Show Commands"), "script-message-to mpvnet show-commands", "F2"));
-        Add(b, new (_("View") + " > " + _("More"), _("Show Bindings"), "script-message-to mpvnet show-bindings"));
-        Add(b, new (_("View") + " > " + _("More"), _("Show Keys"), "script-message-to mpvnet show-keys", "Alt+k"));
-        Add(b, new (_("View") + " > " + _("More"), _("Show Protocols"), "script-message-to mpvnet show-protocols", "Alt+p"));
-        Add(b, new (_("View") + " > " + _("More"), _("Show Decoders"), "script-message-to mpvnet show-decoders"));
-        Add(b, new (_("View") + " > " + _("More"), _("Show Demuxers"), "script-message-to mpvnet show-demuxers"));
+        Add(b, new (_("View"), _("Media Info On-Screen"), "script-message-to mpvnet show-media-info osd", "i"));
+        Add(b, new (_("View"), _("Media Info Message Box"), "script-message-to mpvnet show-media-info msgbox", "Ctrl+m"));
+        Add(b, new (_("View"), _("Progress"), "show-progress", "p"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("On-Screen Menu"), "script-binding select/menu", "F1"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Playlist"), "script-binding select/select-playlist", "F8"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Bindings"), "script-binding select/select-binding", "F2"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Properties"), "script-binding select/show-properties", "F3"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Chapters"), "script-binding select/select-chapter", "Alt+c"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Tracks"), "script-binding select/select-track", "F9"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Audio Tracks"), "script-binding select/select-aid", "Alt+a"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Subtitle Tracks"), "script-binding select/select-sid", "Alt+s"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Secondary Subtitle"), "script-binding select/select-secondary-sid", "Alt+b"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Video Tracks"), "script-binding select/select-vid", "Alt+v"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Editions"), "script-binding select/select-edition", "Alt+e"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Subtitle Lines"), "script-binding select/select-subtitle-line", "Alt+l"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Audio Devices"), "script-binding select/select-audio-device", "Alt+d"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Watch History"), "script-binding select/select-watch-history", "Alt+h"));
+        Add(b, new (_("View") + " > " + _("On-Screen Menu"), _("Watch Later"), "script-binding select/select-watch-later"));
+        Add(b, new (_("View"), "-"));
+        Add(b, new (_("View") + " > " + _("More"), _("Console"), "script-binding console/enable", "`"));
+        Add(b, new (_("View") + " > " + _("More"), _("Commands"), "script-message-to mpvnet show-commands", "F4"));
+        Add(b, new (_("View") + " > " + _("More"), _("Active Bindings In Text Editor"), "script-message-to mpvnet show-bindings"));
+        Add(b, new (_("View") + " > " + _("More"), _("Active Bindings On-Screen"), "script-binding stats/display-page-4-toggle", "?"));
+        Add(b, new (_("View") + " > " + _("More"), _("Keys"), "script-message-to mpvnet show-keys", "Alt+k"));
+        Add(b, new (_("View") + " > " + _("More"), _("Protocols"), "script-message-to mpvnet show-protocols", "Alt+p"));
+        Add(b, new (_("View") + " > " + _("More"), _("Decoders"), "script-message-to mpvnet show-decoders"));
+        Add(b, new (_("View") + " > " + _("More"), _("Demuxers"), "script-message-to mpvnet show-demuxers"));
 
         Add(b, new (_("Window"), _("Fullscreen"), "cycle fullscreen", "Enter"));
         Add(b, new (_("Window") + " > " + _("Zoom"), _("Enlarge"), "script-message-to mpvnet scale-window 1.2", "Alt++"));
@@ -185,22 +166,20 @@ public static class InputHelp
 
         Add(b, new ("", _("Profile")));
 
-        Add(b, new (_("Settings"), _("Show Config Editor"), "script-message-to mpvnet show-conf-editor", "Ctrl+,"));
-        Add(b, new (_("Settings"), _("Show Input Editor"), "script-message-to mpvnet show-input-editor", "Ctrl+i"));
-        Add(b, new (_("Settings"), "-"));
-        Add(b, new (_("Settings"), _("Edit mpv.conf"), "script-message-to mpvnet edit-conf-file mpv.conf", "c"));
-        Add(b, new (_("Settings"), _("Edit input.conf"), "script-message-to mpvnet edit-conf-file input.conf", "k"));
-        Add(b, new (_("Settings"), "-"));
-        Add(b, new (_("Settings"), _("Open Config Folder"), "script-message-to mpvnet open-conf-folder", "Ctrl+f"));
-        Add(b, new (_("Settings") + " > " + _("Setup"), _("Register video file associations"), "script-message-to mpvnet reg-file-assoc video"));
-        Add(b, new (_("Settings") + " > " + _("Setup"), _("Register audio file associations"), "script-message-to mpvnet reg-file-assoc audio"));
-        Add(b, new (_("Settings") + " > " + _("Setup"), _("Register image file associations"), "script-message-to mpvnet reg-file-assoc image"));
-        Add(b, new (_("Settings") + " > " + _("Setup"), _("Unregister file associations"), "script-message-to mpvnet reg-file-assoc unreg"));
-        Add(b, new (_("Settings") + " > " + _("Setup"), "-"));
-        Add(b, new (_("Settings") + " > " + _("Setup"), _("Add mpv.net to Path environment variable"), "script-message-to mpvnet add-to-path"));
-        Add(b, new (_("Settings") + " > " + _("Setup"), _("Remove mpv.net from Path environment variable"), "script-message-to mpvnet remove-from-path"));
-        Add(b, new (_("Settings") + " > " + _("Setup"), "-"));
-        Add(b, new (_("Settings") + " > " + _("Setup"), _("Install Command Palette"), "script-message-to mpvnet install-command-palette"));
+        Add(b, new (_("Config"), _("Show Config Editor"), "script-message-to mpvnet show-conf-editor", "Ctrl+,"));
+        Add(b, new (_("Config"), _("Show Input Editor"), "script-message-to mpvnet show-input-editor", "Ctrl+i"));
+        Add(b, new (_("Config"), "-"));
+        Add(b, new (_("Config"), _("Edit mpv.conf"), "script-message-to mpvnet edit-conf-file mpv.conf", "c"));
+        Add(b, new (_("Config"), _("Edit input.conf"), "script-message-to mpvnet edit-conf-file input.conf", "k"));
+        Add(b, new (_("Config"), "-"));
+        Add(b, new (_("Config"), _("Open Config Folder"), "script-message-to mpvnet open-conf-folder", "Ctrl+f"));
+        Add(b, new (_("Config") + " > " + _("Setup"), _("Register video file associations"), "script-message-to mpvnet reg-file-assoc video"));
+        Add(b, new (_("Config") + " > " + _("Setup"), _("Register audio file associations"), "script-message-to mpvnet reg-file-assoc audio"));
+        Add(b, new (_("Config") + " > " + _("Setup"), _("Register image file associations"), "script-message-to mpvnet reg-file-assoc image"));
+        Add(b, new (_("Config") + " > " + _("Setup"), _("Unregister file associations"), "script-message-to mpvnet reg-file-assoc unreg"));
+        Add(b, new (_("Config") + " > " + _("Setup"), "-"));
+        Add(b, new (_("Config") + " > " + _("Setup"), _("Add mpv.net to Path environment variable"), "script-message-to mpvnet add-to-path"));
+        Add(b, new (_("Config") + " > " + _("Setup"), _("Remove mpv.net from Path environment variable"), "script-message-to mpvnet remove-from-path"));
 
         Add(b, new (_("Tools"), _("Set/clear A-B loop points"), "ab-loop", "l"));
         Add(b, new (_("Tools"), _("Toggle infinite file looping"), "cycle-values loop-file inf no", "L"));
@@ -221,10 +200,10 @@ public static class InputHelp
 
         Add(b, new ("", "", "quit", "q", _("Exit")));
         Add(b, new ("", "", "script-message-to mpvnet show-menu", "MBTN_Right", _("Show Menu")));
-        Add(b, new ("", "", "script-message-to mpvnet play-pause", "Play", _("Play/Pause")));
-        Add(b, new ("", "", "script-message-to mpvnet play-pause", "Pause", _("Play/Pause")));
-        Add(b, new ("", "", "script-message-to mpvnet play-pause", "PlayPause", _("Play/Pause")));
-        Add(b, new ("", "", "script-message-to mpvnet play-pause", "MBTN_Mid", _("Play/Pause")));
+        Add(b, new("", "", "script-message-to mpvnet play-pause", "Play", _("Play/Pause")));
+        Add(b, new("", "", "script-message-to mpvnet play-pause", "Pause", _("Play/Pause")));
+        Add(b, new("", "", "script-message-to mpvnet play-pause", "PlayPause", _("Play/Pause")));
+        Add(b, new("", "", "script-message-to mpvnet play-pause", "MBTN_Mid", _("Play/Pause")));
         Add(b, new ("", "", "stop", "Stop", _("Stop")));
         Add(b, new ("", "", "seek  60", "Forward", _("Forward")));
         Add(b, new ("", "", "seek -60", "Rewind", _("Backward")));
@@ -238,7 +217,7 @@ public static class InputHelp
         Add(b, new ("", "", "playlist-next", "MBTN_Forward", _("Next File")));
         Add(b, new ("", "", "playlist-prev", "<", _("Previous File")));
         Add(b, new ("", "", "playlist-next", ">", _("Next File")));
-        Add(b, new ("", "", "ignore", "MBTN_Left", _("Ignore left mouse butten")));
+        Add(b, new ("", "", "ignore", "MBTN_Left", _("Ignore left mouse button")));
         Add(b, new ("", "", "cycle fullscreen", "f", _("Fullscreen")));
         Add(b, new ("", "", "cycle fullscreen", "MBTN_Left_DBL", _("Fullscreen")));
         Add(b, new ("", "", "no-osd seek  1 exact", "Shift+Right", _("Seek Forward")));
@@ -252,6 +231,23 @@ public static class InputHelp
         Add(b, new ("", "", "no-osd seek  5", "Ctrl+Wheel_Up", _("Seek Forward")));
         Add(b, new ("", "", "no-osd seek -5", "Ctrl+Wheel_Down", _("Seek Backward")));
         Add(b, new ("", "", "quit", "Power", _("Exit")));
+        Add(b, new ("", "", "script-binding select/select-playlist", "g-p", _("Playlist")));
+        Add(b, new ("", "", "script-binding select/select-sid", "g-s", _("Subtitles")));
+        Add(b, new ("", "", "script-binding select/select-secondary-sid", "g-S", _("Secondary Subtitles")));
+        Add(b, new ("", "", "script-binding select/select-aid", "g-a", _("Audio Tracks")));
+        Add(b, new ("", "", "script-binding select/select-vid", "g-v", _("Video Tracks")));
+        Add(b, new ("", "", "script-binding select/select-track", "g-t", _("Tracks")));
+        Add(b, new ("", "", "script-binding select/select-chapter", "g-c", _("Chapters")));
+        Add(b, new ("", "", "script-binding select/select-edition", "g-e", _("Editions")));
+        Add(b, new ("", "", "script-binding select/select-subtitle-line", "g-l", _("Subtitle Lines")));
+        Add(b, new ("", "", "script-binding select/select-audio-device", "g-d", _("Audio Devices")));
+        Add(b, new ("", "", "script-binding select/select-watch-history", "g-h", _("Watch History")));
+        Add(b, new ("", "", "script-binding select/select-watch-later", "g-w", _("Watch Later")));
+        Add(b, new ("", "", "script-binding select/select-binding", "g-b", _("Bindings")));
+        Add(b, new ("", "", "script-binding select/show-properties", "g-r", _("Properties")));
+        Add(b, new ("", "", "script-binding select/menu", "g-m", _("On-Screen Menu")));
+        Add(b, new ("", "", "script-binding select/menu", "MENU", _("On-Screen Menu")));
+        Add(b, new ("", "", "script-binding select/menu", "Ctrl+p", _("On-Screen Menu")));
 
         return b;
 
@@ -367,7 +363,7 @@ public static class InputHelp
             if (binding.Input.Contains("alt+"))
                 binding.Input = binding.Input.Replace("alt+", "Alt+");
 
-            line = line[(line.IndexOf(" ") + 1)..];
+            line = line[(line.IndexOf(' ') + 1)..];
 
             if (line.Contains(App.MenuSyntax))
             {
@@ -383,8 +379,8 @@ public static class InputHelp
             }
             else if (line.Contains('#'))
             {
-                binding.Comment = line[(line.IndexOf("#") + 1)..].Trim();
-                line = line[..line.IndexOf("#")];
+                binding.Comment = line[(line.IndexOf('#') + 1)..].Trim();
+                line = line[..line.IndexOf('#')];
             }
 
             binding.Command = line.Trim();
@@ -450,7 +446,7 @@ public static class InputHelp
 
     public static Dictionary<string, Binding> GetActiveBindings(List<Binding> bindings)
     {
-        Dictionary<string, Binding> ret = new();
+        Dictionary<string, Binding> ret = [];
 
         foreach (Binding binding in bindings)
         {
@@ -475,7 +471,7 @@ public static class InputHelp
 
             Binding binding = it.Value;
 
-            if (!keys.Contains(binding.Input) && (charCount + binding.Input.Length) < 15)
+            if (!keys.Contains(binding.Input) && (charCount + binding.Input.Length) < 30)
             {
                 keys.Add(binding.Input);
                 charCount += binding.Input.Length;

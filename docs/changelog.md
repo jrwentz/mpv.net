@@ -1,4 +1,47 @@
 
+- The Japanese translation was updated. Thanks to the translators!
+
+# v7.1.2.0 (2026-01-09)
+
+- libmpv updated to v0.41 2026-01-09.
+- Some adjustments to recent mpv changes.
+- The Japanese and Turkish translations were updated. Thanks to the translators!
+
+# v7.1.1.5 Beta (2025-11-20)
+
+- Same as in mpv the `?` and `t-4` keys can be used to show the active
+  key bindings on-screen, it supports scrolling and searching.
+  In the context menu it's located at:  
+  `View > More > Show Active Bindings On-Screen`
+- Bindings of select.lua menus have changed:  
+  `F1` On-Screen menu  
+  `F2` Bindings  
+  `F3` Properties  
+  `F4` Commands  
+- The German, Chinese, Japanese and Turkish translations were updated. Thanks to the translators!
+- Users need to install .NET 10 LTS (Long Term Support), it should run on Windows 10.  
+  It was requested by users to prefer LTS over STS (Short Term Support).
+- libmpv and MediaInfo was updated.
+
+# v7.1.1.4 Beta (2025-10-05)
+
+- Support for select.lua has been added. It's a new Lua script built
+  directly into mpv like the osc or console script. It's similar to command_palete.lua. 
+- Fix --script-opt not working.
+- The mpv.net manual was updated.
+- The Turkish translation was updated. A Bulgarian translation was added.
+  Thanks to the translators!
+- The required Dotnet version changed from 6.0 to 9.0. This drops Win 7 support
+  unfortunately. It was done to use new C# language features and make
+  the mpv.net project more attractive for new developers to contribute.
+  Also most users prefer having the newest runtime.
+- auto build has been disabled because it requires updating libmpv and
+  mediainfo all the time which is too much manual work.
+- The script src/Tools/update-mpv.ps1 has been improved. It's the easiest way
+  update mpv and libmpv (x64 and ARM64). Shinshiro has a update script too,
+  but it's a lot longer and more complex.
+- mediainfo and libmpv have been updated.
+
 # v7.1.1.3 Beta (2024-10-20)
 
 - Support for autocreate-playlist, video-exts, audio-exts, image-exts.

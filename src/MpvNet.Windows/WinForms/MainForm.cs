@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using MpvNet.Windows.WPF;
 using MpvNet.Windows.UI;
 using MpvNet.Help;
-using MpvNet.ExtensionMethod;
+using MpvNet.Extensions;
 using MpvNet.MVVM;
 using MpvNet.Windows.WPF.MsgBox;
 
@@ -556,12 +556,12 @@ public partial class MainForm : Form
         if (App.AutofitImage > 1)
             App.AutofitImage = 1;
 
-        bool isAudio = FileTypes.IsAudio(Player.Path.Ext());
+        bool isAudio = FileTypes.IsAudio(Player.Path.Ext);
         
         if (isAudio)
             autoFitHeight = Convert.ToInt32(workingArea.Height * App.AutofitAudio);
 
-        if (FileTypes.IsImage(Player.Path.Ext()))
+        if (FileTypes.IsImage(Player.Path.Ext))
             autoFitHeight = Convert.ToInt32(workingArea.Height * App.AutofitImage);
 
         if (Player.VideoSize.Height == 0 || Player.VideoSize.Width == 0)

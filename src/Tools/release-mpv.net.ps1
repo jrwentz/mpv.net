@@ -1,17 +1,22 @@
 
 <#
 
-Script that releases mpv.net on GitHub.
+Script that builds mpv.net and releases it on GitHub.
+Please note that debug builds are built and released,
+for release builds, scripts need to be rewritten.
 
 Needs 2 positional CLI arguments:
-    1. Directory where the mpv.net source code is located.
+    1. Directory where the mpv.net source code is located (mpv.net\src)
     2. Directory of the output files, for instance the desktop dir.
 
 Dependencies:
     7zip installation found at: 'C:\Program Files\7-Zip\7z.exe'.
     Inno Setup compiler installation found at: 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'.
-    GitHub CLI https://cli.github.com
+    GitHub CLI https://cli.github.com, the env var GH_TOKEN must be defined.
 
+Notes:
+    Before you run the script you need to update the versions found in the file:
+        \mpv.net\src\MpvNet.Windows\MpvNet.Windows.csproj
 #>
 
 # Stop when the first error occurs
@@ -40,7 +45,7 @@ Test (Join-Path $SourceDir 'MpvNet.sln')
 $7zFile            = Test 'C:\Program Files\7-Zip\7z.exe'
 $InnoSetupCompiler = Test 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
 
-$ReleaseNotes = "- [.NET Desktop Runtime 6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)`n- [Changelog](https://github.com/mpvnet-player/mpv.net/blob/main/docs/changelog.md)"
+$ReleaseNotes = "- [.NET Desktop Runtime 10.0](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)`n- [Changelog](https://github.com/mpvnet-player/mpv.net/blob/main/docs/changelog.md)"
 $Repo = 'github.com/mpvnet-player/mpv.net'
 
 # Dotnet Publish

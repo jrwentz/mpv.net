@@ -28,7 +28,7 @@ public class Command
         ["playlist-random"] = args => PlaylistRandom(), // deprecated
     };
 
-    string FormatTime(double value) => ((int)value).ToString("00");
+    static string FormatTime(double value) => ((int)value).ToString("00");
 
     void PlayPause(IList<string> args)
     {
@@ -42,7 +42,7 @@ public class Command
             {
                 if (i.Contains("://") || File.Exists(i))
                 {
-                    Player.LoadFiles(new[] { i }, true, false);
+                    Player.LoadFiles([i], true, false);
                     break;
                 }
             }

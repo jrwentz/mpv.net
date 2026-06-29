@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Windows.Interop;
 using System.Windows;
 
-using MpvNet.ExtensionMethod;
+using MpvNet.Extensions;
 using MpvNet.Windows.WinForms;
 using MpvNet.Windows.WPF.Views;
 using MpvNet.Windows.WPF;
@@ -32,7 +32,6 @@ public class GuiCommand
     {
         ["add-to-path"] = args => AddToPath(),
         ["edit-conf-file"] = EditCongFile,
-        ["install-command-palette"] = args => InstallCommandPalette(),
         ["load-audio"] = LoadAudio,
         ["load-sub"] = LoadSubtitle,
         ["move-window"] = args => MoveWindow?.Invoke(args[0]),
@@ -56,8 +55,6 @@ public class GuiCommand
         ["show-profiles"] = args => Msg.ShowInfo(Player.GetProfiles()),
         ["show-properties"] = args => Player.Command("script-binding select/show-properties"),
         ["show-protocols"] = args => ShowProtocols(),
-        ["show-recent-in-command-palette"] = args => ShowRecentFilesInCommandPalette(),
-        ["stream-quality"] = args => StreamQuality(),
         ["window-scale"] = args => WindowScaleNet?.Invoke(float.Parse(args[0], CultureInfo.InvariantCulture)),
 
 
@@ -165,8 +162,7 @@ public class GuiCommand
         }
 
         string header = BR +
-            "https://mpv.io/manual/master/#list-of-input-commands" + BR2 +
-            "https://github.com/stax76/mpv-scripts#command_palette" + BR;
+            "https://mpv.io/manual/master/#list-of-input-commands" + BR;
 
         ShowTextWithEditor("Input Commands", header + sb.ToString());
     }
@@ -198,11 +194,13 @@ public class GuiCommand
         else
         {
             string clipboard = System.Windows.Forms.Clipboard.GetText();
-            List<string> files = new List<string>();
+            List<string> files = [];
 
             foreach (string i in clipboard.Split(BR.ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+            {
                 if (i.Contains("://") || File.Exists(i))
                     files.Add(i);
+            }
 
             if (files.Count == 0)
             {
@@ -227,9 +225,13 @@ public class GuiCommand
 
         dialog.Multiselect = true;
 
-        if (dialog.ShowDialog() == DialogResult.OK)
-            foreach (string i in dialog.FileNames)
-                Player.CommandV("audio-add", i);
+        if (dialog.ShowDialog() != DialogResult.OK)
+            return;
+
+        foreach (string i in dialog.FileNames)
+        {
+            Player.CommandV("audio-add", i);
+        }
     }
 
     void RegisterFileAssociations(IList<string> args)
@@ -270,68 +272,16 @@ public class GuiCommand
         catch { }
     }
 
-    void InstallCommandPalette()
-    {
-        if (Msg.ShowQuestion("Install command palette?") != MessageBoxResult.OK)
-            return;
-
-        try
-        {
-            Environment.SetEnvironmentVariable("MPVNET_HOME", Player.ConfigFolder);
-            using Process proc = new Process();
-            proc.StartInfo.FileName = "powershell";
-            proc.StartInfo.Arguments = "-executionpolicy bypass -nologo -noexit -noprofile -command \"irm https://raw.githubusercontent.com/stax76/mpv-scripts/refs/heads/main/powershell/command_palette_installer.ps1 | iex\"";
-            proc.Start();
-        }
-        catch
-        {
-        }
-    }
-
-    void StreamQuality()
-    {
-        int version = Player.GetPropertyInt("user-data/command-palette/version");
-
-        if (version >= 2)
-            Player.Command("script-message-to command_palette show-command-palette \"Stream Quality\"");
-        else
-        {
-            var r = Msg.ShowQuestion("The Stream Quality feature requires the command palette to be installed." + BR2 +
-                                     "Would you like to install the command palette now?");
-
-            if (r == MessageBoxResult.OK)
-                Player.Command("script-message-to mpvnet install-command-palette");
-        }
-    }
-
-    void ShowRecentFilesInCommandPalette()
-    {
-        Obj o = new();
-        o.title = "Recent Files";
-        o.selected_index = 0;
-
-        var items = new List<Item>();
-
-        foreach (string file in App.Settings.RecentFiles)
-            items.Add(new Item() { title = Path.GetFileName(file),
-                                   value = new string []{ "loadfile", file },
-                                   hint = file});
-
-        o.items = items.ToArray();
-        string json = JsonSerializer.Serialize(o);
-        Player.CommandV("script-message", "show-command-palette-json", json);
-    }
-
     class Obj
     {
         public string title { get; set; } = "";
         public int selected_index { get; set; } = 0;
-        public Item[] items { get; set; } = Array.Empty<Item>();
+        public Item[] items { get; set; } = [];
     }
 
     class Item
     {
-        public string[] value  { get; set; } = Array.Empty<string>();
+        public string[] value  { get; set; } = [];
         public string title { get; set; } = "";
         public string hint { get; set; } = "";
     }
@@ -353,20 +303,20 @@ public class GuiCommand
 
         if (File.Exists(path) && osd)
         {
-            if (FileTypes.IsAudio(path.Ext()))
+            if (FileTypes.IsAudio(path.Ext))
             {
                 text = Player.GetPropertyOsdString("filtered-metadata");
                 Player.CommandV("show-text", text, "5000");
                 return;
             }
-            else if (FileTypes.IsImage(path.Ext()))
+            else if (FileTypes.IsImage(path.Ext))
             {
                 fileSize = new FileInfo(path).Length;
 
                 text = "Width: " + Player.GetPropertyInt("width") + "\n" +
                        "Height: " + Player.GetPropertyInt("height") + "\n" +
                        "Size: " + Convert.ToInt32(fileSize / 1024.0) + " KB\n" +
-                       "Type: " + path.Ext().ToUpper();
+                       "Type: " + path.Ext.ToUpper();
 
                 Player.CommandV("show-text", text, "5000");
                 return;
@@ -382,7 +332,7 @@ public class GuiCommand
             int width = Player.GetPropertyInt("video-params/w");
             int height = Player.GetPropertyInt("video-params/h");
             TimeSpan len = TimeSpan.FromSeconds(Player.GetPropertyDouble("duration"));
-            text = path.FileName() + "\n";
+            text = path.FileName + "\n";
             text += FormatTime(len.TotalMinutes) + ":" + FormatTime(len.Seconds) + "\n";
             if (fileSize > 0)
                 text += Convert.ToInt32(fileSize / 1024.0 / 1024.0) + " MB\n";
@@ -393,15 +343,21 @@ public class GuiCommand
         }
 
         if (App.MediaInfo && !osd && File.Exists(path) && !path.Contains(@"\\.\pipe\"))
-            using (MediaInfo mediaInfo = new MediaInfo(path))
-                text = Regex.Replace(mediaInfo.GetSummary(full, raw), "Unique ID.+", "");
+        {
+            using MediaInfo mediaInfo = new MediaInfo(path);
+            text = Regex.Replace(mediaInfo.GetSummary(full, raw), "Unique ID.+", "");
+        }
         else
         {
             Player.UpdateExternalTracks();
             text = "N: " + Player.GetPropertyString("filename") + BR;
             lock (Player.MediaTracksLock)
+            {
                 foreach (MediaTrack track in Player.MediaTracks)
+                {
                     text += track.Text + BR;
+                }
+            }
         }
 
         text = text.TrimEx();
@@ -426,7 +382,7 @@ public class GuiCommand
     {
         string path = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.User)!;
 
-        if (path.ToLower().Contains(Folder.Startup.TrimEnd(Path.DirectorySeparatorChar).ToLower()))
+        if (path.Contains(Folder.Startup.TrimEnd(Path.DirectorySeparatorChar), StringComparison.CurrentCultureIgnoreCase))
         {
             Msg.ShowWarning(_("mpv.net is already in the Path environment variable."));
             return;
